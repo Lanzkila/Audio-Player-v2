@@ -151,6 +151,14 @@ h1 { color: #3c4858; font-size: 26px; margin-bottom: 10px; font-weight: 700; }
 .tooltip-icon:hover .tooltip-text { visibility: visible; opacity: 1; }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    #progressBar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #4ade80, #22c55e);
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.5); /* Efek bercahaya */
+    transition: width 0.3s ease-in-out; /* Pergerakan lebih lembut */
+}
     </style>
 </head>
 <body>
@@ -194,13 +202,19 @@ h1 { color: #3c4858; font-size: 26px; margin-bottom: 10px; font-weight: 700; }
 
     <button class="btn-convert" id="convertBtn">Convert Now</button>
 
-    <div id="statusArea" style="display:none">
-        Processing: <span id="percentText">0%</span>
+    <div id="statusArea" style="display:none; margin-top:15px;">
+    <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: #555; margin-bottom: 5px;">
+        <span>Processing...</span>
+        <span id="pageCounter">0 / 0</span>
     </div>
     
      <div id="progressContainer">
     <div id="progressBar"></div>
 </div>
+
+    <p id="percentText">0%</p>
+</div>
+    
     <div id="infoBox" style="display:none; background: #ffda44; color: #1a3c34; padding: 15px; border-radius: 4px; margin-top: 15px; font-size: 15px; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.1); line-height: 1.4;">
     🚀 You're halfway there! Hang tight, we're still converting.
 </div>
@@ -300,6 +314,7 @@ document.getElementById('convertBtn').onclick = async function() {
           let percent = Math.round(((i + 1) / files.length) * 100);
           percentText.innerText = percent + '%';
           if(progressBar) progressBar.style.width = percent + '%';
+          document.getElementById('pageCounter').innerText = `${i + 1} / ${files.length}`;   
           if (percent >= 50 && percent < 100) infoBox.style.display = 'block';
           
           await new Promise(r => setTimeout(r, 1));
