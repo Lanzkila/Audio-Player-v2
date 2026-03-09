@@ -163,6 +163,26 @@ h1 { color: #3c4858; font-size: 26px; margin-bottom: 10px; font-weight: 700; }
     border-radius: 4px;
     transition: width 0.2s ease-in-out;
 }
+
+  /* Tajuk "Upload CBZ File" */
+.upload-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 12px; /* Bagi jarak dengan kotak bawah */
+    margin-top: 20px;    /* Bagi jarak dengan input width/quality kat atas */
+    color: #333;
+}
+
+/* Kotak border kelabu tu */
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    gap: 12px; /* Jarak antara butang "Choose File" dengan nama fail */
+}
     </style>
 </head>
 <body>
@@ -197,12 +217,16 @@ h1 { color: #3c4858; font-size: 26px; margin-bottom: 10px; font-weight: 700; }
         </div>
     </div>
 
-    <label class="file-label-text">Upload CBZ File</label>
-    <div class="file-row">
-        <label class="btn-choose" for="fileInput">Choose File</label>
-        <span id="fileNameDisplay">No file chosen</span>
-        <input accept=".cbz,.zip" id="fileInput" style="display:none" type="file">
-    </div>
+    <p class="upload-label">Upload CBZ File</p>
+
+<div class="file-upload-wrapper">
+    <label for="fileInput" class="custom-file-btn">Choose File</label>
+    <input type="file" id="fileInput" hidden>
+    
+    <span id="fileNameDisplay" style="font-size: 13px; color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        No file chosen...
+    </span>
+</div>
 
     <button class="btn-convert" id="convertBtn">Convert Now</button>
 
