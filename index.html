@@ -129,76 +129,41 @@
     font-weight: 500;
 }
 
-        .guide-box {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
-    text-align: left;
-    font-size: 14px;
-    color: #444;
+/* CSS UNTUK MODAL (PANDUAN) */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6); /* Gelapkan background */
 }
 
-.guide-title {
-    margin-top: 0;
-    color: #555;
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto; 
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
-.guide-section {
-    margin: 15px 0;
+.close-btn {
+    position: absolute;
+    right: 20px; top: 15px;
+    color: #888;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.guide-section ul {
-    margin: 5px 0;
-    padding-left: 20px;
-}
-
-.guide-text {
-    color: #3c4858;
-}
-
-.guide-note {
-    color: #d93025; /* Warna merah amaran */
-    font-weight: 500;
-}
-
-.guide-disclaimer {
-    font-size: 12px;
-    color: #777;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-}
-
-.test-file-box {
-    background: #eef7ff;
-    border: 1px solid #c2e0ff;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-}
-
-.test-file-box p {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-weight: 500;
-}
-
-.btn-test {
-    background: #007bff;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    display: inline-block;
-    font-weight: 700;
-    font-size: 14px;
-}
-
-.btn-test:hover {
-    background: #0056b3;
-}
+/* Style teks dalam modal (kekalkan yang penting) */
+.guide-title { font-weight: bold; margin-bottom: 15px; color: #333; }
+.guide-section ul { padding-left: 20px; margin: 10px 0; }
+.guide-note { color: #d93025; font-size: 13px; margin: 15px 0; }
+.test-file-box { background: #eef7ff; padding: 15px; border-radius: 8px; text-align: center; }
 
         /* Container untuk icon i */
 .tooltip-icon {
@@ -268,28 +233,36 @@
     <br><br>
     <span>No installation required — everything happens in your browser!</span>
   </p>
-    <div class="guide-box">
-    <p class="guide-title">Configure the settings below to generate your PDF. For optimal results:</p>
-    
-    <div class="guide-section">
-        <strong>Files Larger than 200MB:</strong>
-        <ul>
-            <li><strong>Image Width:</strong> Recommended <strong>1200px and 1400px</strong>.</li>
-            <li><strong>Image Quality:</strong> Recommended between <strong>60 and 80</strong>.</li>
-        </ul>
-    </div>
+    <div style="text-align: center; margin-bottom: 20px;">
+    <a href="javascript:void(0)" id="openGuide" style="color: #007bff; text-decoration: none; font-weight: 500;">How to Use?</a>
+</div>
 
-    <p class="guide-text"><strong>Files Smaller than 200MB try using 1900 as Image Width and 100 as Image Quality.</strong></p>
+<div id="guideModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        
+        <p class="guide-title">Configure the settings below to generate your PDF. For optimal results:</p>
+        
+        <div class="guide-section">
+            <strong>Files Larger than 200MB:</strong>
+            <ul>
+                <li><strong>Image Width:</strong> Recommended 1200px and 1400px.</li>
+                <li><strong>Image Quality:</strong> Recommended between 60 and 80.</li>
+            </ul>
+        </div>
 
-    <p class="guide-note">Note: Amazon Kindle only allows PDFs up to 200MB. Adjust your settings accordingly.</p>
+        <p class="guide-text"><strong>Files Smaller than 200MB try using 1900 as Image Width and 100 as Image Quality.</strong></p>
 
-    <p class="guide-disclaimer">
-        <em>These recommendations are based on my personal usage and may vary depending on your specific requirements and constraints.</em>
-    </p>
+        <p class="guide-note">Note: Amazon Kindle only allows PDFs up to 200MB. Adjust your settings accordingly.</p>
 
-    <div class="test-file-box">
-        <p>Don't have a CBZ file to test?</p>
-        <a href="#" class="btn-test">Click Here to Download a Test File</a>
+        <p class="guide-disclaimer">
+            <em>These recommendations are based on my personal usage and may vary depending on your specific requirements and constraints.</em>
+        </p>
+
+        <div class="test-file-box">
+            <p>Don't have a CBZ file to test?</p>
+            <a href="#" class="btn-test">Click Here to Download a Test File</a>
+        </div>
     </div>
 </div>
 
@@ -440,6 +413,27 @@
         document.getElementById('infoBox').style.display = 'none'; // Padam kotak kuning
         document.getElementById('successBar').style.display = 'block'; // Tunjuk kotak hijau
     }
+
+const modal = document.getElementById("guideModal");
+const btn = document.getElementById("openGuide");
+const span = document.getElementsByClassName("close-btn")[0];
+
+// Bila klik "How to Use?", buka modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Bila klik butang (X), tutup modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Bila klik kat luar kotak modal, tutup juga
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 </script>
 
 </body>
