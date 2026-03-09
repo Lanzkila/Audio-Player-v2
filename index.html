@@ -129,71 +129,6 @@
     font-weight: 500;
 }
 
-/* CSS UNTUK MODAL (PANDUAN) */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1000; 
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6); /* Gelapkan background */
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto; /* Jarak dari atas skrin */
-    padding: 25px 20px; /* Ruang dalam: atas-bawah 25px, kiri-kanan 20px */
-    border-radius: 12px;
-    width: 90%; /* Supaya ada gap 5% kiri dan 5% kanan kat HP */
-    max-width: 400px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    box-sizing: border-box; /* WAJIB: Supaya padding tak buat kotak jadi lebar sangat */
-    text-align: left; /* Pastikan teks bermula dari kiri secara rata */
-}
-
-/* Supaya list (titik-titik) tu masuk ke dalam kotak, tak terkeluar */
-.modal-content ul {
-    padding-left: 20px;
-    margin: 10px 0;
-}
-
-.modal-content p, .modal-content li {
-    line-height: 1.5; /* Jarak antara baris ayat */
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-/* Supaya butang Test File tu duduk tengah dan lebar dia ngam */
-.test-file-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: #eef7ff;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.btn-test {
-    display: inline-block;
-    width: 100%; /* Biar butang ni panjang penuh dalam kotak biru tu */
-    box-sizing: border-box;
-}
-
-.close-btn {
-    position: absolute;
-    right: 20px; top: 15px;
-    color: #888;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Style teks dalam modal (kekalkan yang penting) */
-.guide-title { font-weight: bold; margin-bottom: 15px; color: #333; }
-.guide-section ul { padding-left: 20px; margin: 10px 0; }
-.guide-note { color: #d93025; font-size: 13px; margin: 15px 0; }
-.test-file-box { background: #eef7ff; padding: 15px; border-radius: 8px; text-align: center; }
-
         /* Container untuk icon i */
 .tooltip-icon {
     display: inline-block;
@@ -251,6 +186,23 @@
     visibility: visible;
     opacity: 1;
 }
+
+ #progressContainer {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: none; /* Muncul bila start convert */
+    height: 10px;
+    overflow: hidden;
+}
+
+#progressBar {
+    width: 0%;
+    height: 100%;
+    background-color: #4ade80; /* Warna hijau success tadi */
+    transition: width 0.2s ease;
+}
     </style>
 </head>
 <body>
@@ -262,38 +214,6 @@
     <br><br>
     <span>No installation required — everything happens in your browser!</span>
   </p>
-    <div style="text-align: center; margin-bottom: 20px;">
-    <a href="javascript:void(0)" id="openGuide" style="color: #007bff; text-decoration: none; font-weight: 500;">How to Use?</a>
-</div>
-
-<div id="guideModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        
-        <p class="guide-title">Configure the settings below to generate your PDF. For optimal results:</p>
-        
-        <div class="guide-section">
-            <strong>Files Larger than 200MB:</strong>
-            <ul>
-                <li><strong>Image Width:</strong> Recommended 1200px and 1400px.</li>
-                <li><strong>Image Quality:</strong> Recommended between 60 and 80.</li>
-            </ul>
-        </div>
-
-        <p class="guide-text"><strong>Files Smaller than 200MB try using 1900 as Image Width and 100 as Image Quality.</strong></p>
-
-        <p class="guide-note">Note: Amazon Kindle only allows PDFs up to 200MB. Adjust your settings accordingly.</p>
-
-        <p class="guide-disclaimer">
-            <em>These recommendations are based on my personal usage and may vary depending on your specific requirements and constraints.</em>
-        </p>
-
-        <div class="test-file-box">
-            <p>Don't have a CBZ file to test?</p>
-            <a href="#" class="btn-test">Click Here to Download a Test File</a>
-        </div>
-    </div>
-</div>
 
     <div class="radio-group">
         <span class="label-text">Convert to</span>
@@ -329,15 +249,17 @@
     <div id="statusArea" style="display:none">
         Processing: <span id="percentText">0%</span>
     </div>
-
+    
+     <div id="progressContainer">
+    <div id="progressBar"></div>
+</div>
     <div id="infoBox" style="display:none; background: #ffda44; color: #1a3c34; padding: 15px; border-radius: 4px; margin-top: 15px; font-size: 15px; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.1); line-height: 1.4;">
     🚀 You're halfway there! Hang tight, we're still converting.
 </div>
 
-    <div class="success-bar" id="successBar">
-        ✓ <a href="#" id="downloadLink" style="color:#064e3b; font-weight:700;">Click here</a> to download your file.
+    <div id="successBar" style="display:none; background: #4ade80; padding: 15px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        ✅ <a href="#" id="downloadLink" style="font-weight: bold; color: #0044ff;">Click here</a> to download your file.
     </div>
-</div>
 
     <div id="sizeWarning" style="display:none; background: #ffebee; color: #c62828; padding: 15px; border-radius: 6px; border: 1px solid #ffcdd2; margin-top: 15px; font-size: 13px;">
     <strong>⚠️ Fail Sangat Besar:</strong> Fail anda melebihi 400MB. Proses mungkin agak perlahan dan memerlukan memori yang tinggi. Sila tutup tab lain untuk mengelakkan gangguan.
@@ -395,21 +317,31 @@
                     const img = new Image();
                     await new Promise(r => { img.onload = r; img.src = url; });
 
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width; // Ikut input Width kau (cth: 1200)
+                    canvas.height = (img.height / img.width) * width;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    const lowResImg = canvas.toDataURL('image/jpeg', quality);
+
                     const h = (img.height / img.width) * width;
                     if (i === 0) {
-                        pdf = new jsPDF({ unit: "px", format: [width, h] });
+                    pdf = new jsPDF({ unit: "px", format: [canvas.width, canvas.height] });
                     } else {
-                        pdf.addPage([width, h], 'p');
+                    pdf.addPage([canvas.width, canvas.height], 'p');
                     }
-                    pdf.addImage(img, 'JPEG', 0, 0, width, h, undefined, 'FAST');
+                    pdf.addImage(lowResImg, 'JPEG', 0, 0, canvas.width, canvas.height, undefined, 'FAST');
                     URL.revokeObjectURL(url);
+                    img.src = "";
+                    canvas.width = 0; canvas.height = 0;
                     let percent = Math.round(((i + 1) / files.length) * 100);
+                    document.getElementById('progressBar').style.width = percent + '%';
                     percentText.innerText = percent + '%';
-                
                 if (percent >= 50 && percent < 100) {
                     infoBox.style.display = 'block';
                 }
-
+                    await new Promise(r => setTimeout(r, 1));
             }
             finishDownload(pdf.output('blob'), selectedFile.name.replace('.cbz', '.pdf'));
             } else {
@@ -438,15 +370,10 @@
 
     // 2. Guna kualiti 'FAST' dan format JPEG untuk kompresi automatik
     pdf.addImage(img, 'JPEG', 0, 0, width, h, undefined, 'FAST');
-
-    // 3. PENTING: Padam URL dari memori serta-merta
     URL.revokeObjectURL(url);
-    
-    // 4. Update progress
     let percent = Math.round(((i + 1) / files.length) * 100);
-    percentText.innerText = percent + '%';
     
-    // Tunjuk kotak kuning 50%
+    percentText.innerText = percent + '%';
     if (percent >= 50 && percent < 100) infoBox.style.display = 'block';
 }
 
@@ -471,27 +398,6 @@
         document.getElementById('infoBox').style.display = 'none'; // Padam kotak kuning
         document.getElementById('successBar').style.display = 'block'; // Tunjuk kotak hijau
     }
-
-const modal = document.getElementById("guideModal");
-const btn = document.getElementById("openGuide");
-const span = document.getElementsByClassName("close-btn")[0];
-
-// Bila klik "How to Use?", buka modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// Bila klik butang (X), tutup modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// Bila klik kat luar kotak modal, tutup juga
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
 </script>
 
 </body>
